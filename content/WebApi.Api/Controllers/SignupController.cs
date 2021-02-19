@@ -1,10 +1,13 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 
+using Herald.Result.Status;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
+using WebApi.Application.Features.GetAddressByPostalCode;
 using WebApi.Application.Signup;
 
 namespace WebApi.Api.Controllers
@@ -27,12 +30,34 @@ namespace WebApi.Api.Controllers
         {
             var result = await _mediator.Send(command);
 
-            if (result.HasMessages())
+            switch (result.Status)
             {
-                return BadRequest(result.GetMessages());
+                case NotFound notfound:
+                    return NotFound(notfound.Message);
+                case Fail fail:
+                    return BadRequest(fail.Message);
             }
 
             return Ok();
+        }
+
+        [HttpGet()]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Get([FromBody] GetAddressByPostalCodeCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            switch (result.Status)
+            {
+                case NotFound notfound:
+                    return NotFound(notfound.Message);
+                case Fail fail:
+                    return BadRequest(fail.Message);
+            }
+
+            return Ok(result.Value);
         }
     }
 }

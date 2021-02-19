@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using MediatR;
+using Herald.Result;
 
-using WebApi.Application.Features;
+using MediatR;
 
 namespace WebApi.Application.Signup
 {
-    public partial class SignupCommand : IRequest<Result<object>>
+    public partial class SignupCommand : IRequest<Result>
     {
         [Required]
         public string Name { get; set; }
