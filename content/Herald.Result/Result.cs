@@ -37,14 +37,16 @@ namespace Herald.Result
             return new Result(new Sucess(message));
         }
 
-        public static Result<T> Sucess(T data = default)
+        public static Result Sucess(T data = default)
         {
-            return new Result<T>(new Sucess<T>(data));
+            return new Result(new Sucess<T>(data));
         }
     }
 
     public class Result : IResult
     {
+        public object Value => ((Sucess<object>)Status).Value;
+
         public IStatus Status { get; }
 
         public Result()
@@ -71,9 +73,9 @@ namespace Herald.Result
             return new Result(new Sucess(message));
         }
 
-        public static Result<T> Sucess<T>(T data = default)
+        public static Result Sucess<T>(T data = default)
         {
-            return new Result<T>(new Sucess<T>(data));
+            return new Result(new Sucess<T>(data));
         }
     }
 }
