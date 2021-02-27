@@ -1,4 +1,4 @@
-﻿namespace Herald.Result
+﻿namespace Herald.Result.Status
 {
     public interface IStatus
     {

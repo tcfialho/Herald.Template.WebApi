@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 
-using Herald.Result.Status;
+using Herald.Result;
 
 using MediatR;
 
@@ -12,6 +12,8 @@ using WebApi.Application.Signup;
 
 namespace WebApi.Api.Controllers
 {
+
+
     [Route("[controller]")]
     [ApiController]
     public class SignupController : ControllerBase
@@ -28,36 +30,17 @@ namespace WebApi.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody] SignupCommand command)
         {
-            var result = await _mediator.Send(command);
-
-            switch (result.Status)
-            {
-                case NotFound notfound:
-                    return NotFound(notfound.Message);
-                case Fail fail:
-                    return BadRequest(fail.Message);
-            }
-
-            return Ok(result.Value);
+            return await _mediator.Send(command).ToActionResult();
         }
 
+
         [HttpGet()]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(GetAddressByPostalCodeResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Get([FromBody] GetAddressByPostalCodeCommand command)
+        public async Task<IActionResult> Get([FromQuery] GetAddressByPostalCodeCommand command)
         {
-            var result = await _mediator.Send(command);
-
-            switch (result.Status)
-            {
-                case NotFound notfound:
-                    return NotFound(notfound.Message);
-                case Fail fail:
-                    return BadRequest(fail.Message);
-            }
-
-            return Ok(result.Value);
+            return await _mediator.Send(command).ToActionResult();
         }
     }
 }

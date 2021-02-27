@@ -2,48 +2,7 @@
 
 namespace Herald.Result
 {
-    public class Result<T> : IResult<T>
-    {
-        public T Value => ((Sucess<T>)Status).Value;
-
-        public IStatus Status { get; }
-
-        public Result()
-        {
-        }
-
-        internal Result(IStatus status)
-        {
-            Status = status;
-        }
-
-        public static implicit operator Result<T>(Result result)
-        {
-            return new Result<T>(result.Status);
-        }
-
-        public static Result NotFound(string message = default)
-        {
-            return new Result(new NotFound(message));
-        }
-
-        public static Result Fail(string message = default)
-        {
-            return new Result(new Fail(message));
-        }
-
-        public static Result Sucess(string message = default)
-        {
-            return new Result(new Sucess(message));
-        }
-
-        public static Result Sucess(T data = default)
-        {
-            return new Result(new Sucess<T>(data));
-        }
-    }
-
-    public class Result : IResult
+    public class Result
     {
         public object Value => ((Sucess<object>)Status).Value;
 
@@ -68,9 +27,9 @@ namespace Herald.Result
             return new Result(new Fail(message));
         }
 
-        public static Result Sucess(string message = default)
+        public static Result Sucess()
         {
-            return new Result(new Sucess(message));
+            return new Result(new Sucess<object>(default));
         }
 
         public static Result Sucess<T>(T data = default)
