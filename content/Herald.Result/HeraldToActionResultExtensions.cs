@@ -15,9 +15,14 @@ namespace Herald.Result
             switch (result.Status)
             {
                 case NotFound notfound:
-                    return new NotFoundObjectResult((notfound.Message));
+                    return new NotFoundObjectResult(notfound.Message);
                 case Fail fail:
                     return new BadRequestObjectResult(fail.Message);
+            }
+
+            if (result.Value == null)
+            {
+                return new OkResult();
             }
 
             return new OkObjectResult(result.Value);
@@ -30,9 +35,14 @@ namespace Herald.Result
             switch (result.Status)
             {
                 case NotFound notfound:
-                    return new NotFoundObjectResult((notfound.Message));
+                    return new NotFoundObjectResult(notfound.Message);
                 case Fail fail:
                     return new BadRequestObjectResult(fail.Message);
+            }
+
+            if (result.Value == null)
+            {
+                return new OkResult();
             }
 
             return new OkObjectResult(result.Value);

@@ -1,10 +1,12 @@
-﻿using Herald.Result.Status;
+﻿
+using Herald.Result.Status;
 
 namespace Herald.Result
 {
+
     public class Result
     {
-        public object Value => ((Sucess<object>)Status).Value;
+        public object Value => Status.GetType().GetProperty("Value").GetValue(Status, null);
 
         public IStatus Status { get; }
 

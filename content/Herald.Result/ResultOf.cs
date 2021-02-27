@@ -36,15 +36,5 @@ namespace Herald.Result
         {
             return new ResultOf<T>(new Sucess<T>(data));
         }
-
-        public static implicit operator ResultOf<T>(Result result)
-        {
-            return new ResultOf<T>(result.Status);
-        }
-
-        public static implicit operator Result(ResultOf<T> result)
-        {
-            return new ResultOf<T>(result.Status);
-        }
     }
 }
