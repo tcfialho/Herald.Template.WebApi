@@ -44,7 +44,7 @@ namespace WebApi.Application.Signup
 
             await _uow.Commit();
 
-            return Result.Sucess();
+            return ResultStatus.Sucess();
         }
     }
 }

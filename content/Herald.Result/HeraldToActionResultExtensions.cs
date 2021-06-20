@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
 
-using Herald.Result.Status;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace Herald.Result
@@ -12,40 +10,34 @@ namespace Herald.Result
         {
             var result = await taskResult;
 
-            switch (result.Status)
+            switch (result)
             {
                 case NotFound notfound:
                     return new NotFoundObjectResult(notfound.Message);
                 case Fail fail:
                     return new BadRequestObjectResult(fail.Message);
+                case Sucess sucess when !sucess.HasValue():
+                    return new OkResult();
             }
 
-            if (result.Value == null)
-            {
-                return new OkResult();
-            }
-
-            return new OkObjectResult(result.Value);
+            return new OkObjectResult(result.GetValue());
         }
 
-        public static async Task<IActionResult> ToActionResult<T>(this Task<ResultOf<T>> taskResult)
+        public static async Task<IActionResult> ToActionResult<T>(this Task<Result<T>> taskResult) where T : class
         {
             var result = await taskResult;
 
-            switch (result.Status)
+            switch (result)
             {
                 case NotFound notfound:
                     return new NotFoundObjectResult(notfound.Message);
                 case Fail fail:
                     return new BadRequestObjectResult(fail.Message);
+                case Sucess<T> sucess when !sucess.HasValue():
+                    return new OkResult();
             }
 
-            if (result.Value == null)
-            {
-                return new OkResult();
-            }
-
-            return new OkObjectResult(result.Value);
+            return new OkObjectResult(result.GetValue());
         }
     }
 }

@@ -1,42 +1,107 @@
-﻿
-using Herald.Result.Status;
-
-namespace Herald.Result
+﻿namespace Herald.Result
 {
-
-    public class Result
+    public enum Status
     {
-        public object Value => Status.GetType().GetProperty("Value").GetValue(Status, null);
+        Sucess,
+        Fail,
+        NotFound
+    }
 
-        public IStatus Status { get; }
+    public class Result<T> where T : class
+    {
+        public virtual Status Status { get; }
 
-        public Result()
+        protected T _value;
+
+        public T GetValue()
         {
+            return _value;
         }
 
-        internal Result(IStatus status)
+        public bool HasValue()
         {
-            Status = status;
+            return _value != default(T);
         }
 
+        public static implicit operator Result<T>(Result o)
+        {
+            return new Result<T>();
+        }
+    }
+
+    public class Result : Result<object>
+    {
+
+    }
+
+    public class Sucess<T> : Result<T> where T : class
+    {
+        public override Status Status { get; } = Status.Sucess;
+
+        public T Value => (T)_value;
+
+        public Sucess(T data)
+        {
+            _value = data;
+        }
+    }
+
+    public class Sucess : Result
+    {
+        public override Status Status { get; } = Status.Sucess;
+
+        public object Value => _value;
+
+        public Sucess(object data)
+        {
+            _value = data;
+        }
+    }
+
+    public class Fail : Result
+    {
+        public override Status Status { get; } = Status.Fail;
+
+        public string Message => (string)_value;
+
+        public Fail(string message)
+        {
+            _value = message;
+        }
+    }
+
+    public class NotFound : Result
+    {
+        public override Status Status { get; } = Status.NotFound;
+
+        public string Message => (string)_value;
+
+        public NotFound(string message)
+        {
+            _value = message;
+        }
+    }
+
+    public class ResultStatus
+    {
         public static Result NotFound(string message = default)
         {
-            return new Result(new NotFound(message));
+            return new NotFound(message);
         }
 
         public static Result Fail(string message = default)
         {
-            return new Result(new Fail(message));
+            return new Fail(message);
         }
 
         public static Result Sucess()
         {
-            return new Result(new Sucess<object>(default));
+            return new Sucess(null);
         }
 
-        public static Result Sucess<T>(T data = default)
+        public static Result<T> Sucess<T>(T data = default) where T : class
         {
-            return new Result(new Sucess<T>(data));
+            return new Sucess<T>(data);
         }
     }
 }
