@@ -26,8 +26,6 @@ namespace WebApi.Application.Features.GetAddressByPostalCode
 
             var result = cepResponse.Adapt<GetAddressByPostalCodeResult>();
 
-            return ResultStatus.Fail("Fail!");
-
             return ResultStatus.Sucess(result);
         }
     }

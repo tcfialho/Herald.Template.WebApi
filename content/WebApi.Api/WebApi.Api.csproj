@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Herald.Observability.Jaeger" Version="1.0.0" />
+    <PackageReference Include="Herald.Result.Mvc" Version="1.0.0" />
     <PackageReference Include="Herald.Web.Swagger" Version="1.1.0" />
   </ItemGroup>
 

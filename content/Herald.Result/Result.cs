@@ -1,4 +1,9 @@
-﻿namespace Herald.Result
+﻿using System;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace Herald.Result
 {
     public enum Status
     {
@@ -31,7 +36,6 @@
 
     public class Result : Result<object>
     {
-
     }
 
     public class Sucess<T> : Result<T> where T : class

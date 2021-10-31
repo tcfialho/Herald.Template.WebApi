@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 
-using Herald.Result;
+using Herald.Result.Mvc;
 
 using MediatR;
 
@@ -12,8 +12,6 @@ using WebApi.Application.Signup;
 
 namespace WebApi.Api.Controllers
 {
-
-
     [Route("[controller]")]
     [ApiController]
     public class SignupController : ControllerBase
@@ -28,19 +26,15 @@ namespace WebApi.Api.Controllers
         [HttpPost()]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] SignupCommand command)
-        {
-            return await _mediator.Send(command).ToActionResult();
-        }
+        public async Task<IActionResult> Post([FromBody] SignupCommand command) 
+            => await _mediator.Send(command).ToActionResult();
 
 
         [HttpGet()]
         [ProducesResponseType(typeof(GetAddressByPostalCodeResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Get([FromQuery] GetAddressByPostalCodeCommand command)
-        {
-            return await _mediator.Send(command).ToActionResult();
-        }
+        public async Task<IActionResult> Get([FromQuery] GetAddressByPostalCodeCommand command) 
+            => await _mediator.Send(command).ToActionResult();
     }
 }
