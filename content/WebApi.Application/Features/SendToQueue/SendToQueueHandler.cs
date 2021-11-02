@@ -8,8 +8,6 @@ using Mapster;
 
 using MediatR;
 
-using WebApi.Application.Entities;
-
 namespace WebApi.Application.PutIntoQueue
 {
     public class SendToQueueHandler : IRequestHandler<SendToQueueCommand, Result>
