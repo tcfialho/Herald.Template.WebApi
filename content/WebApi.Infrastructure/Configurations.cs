@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Net.Http;
 
+using Herald.MessageQueue.Sqs;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
 
@@ -13,15 +16,29 @@ using WebApi.Application.Infrastructure.Repositories;
 using WebApi.Application.Infrastructure.WebServices;
 using WebApi.Infrastructure.Persistance;
 using WebApi.Infrastructure.Repositories;
-
 namespace WebApi.Infrastructure
 {
     public static class Configurations
     {
+        public static IHost DoEFMigration(this IHost host)
+        {
+            using (var scope = host.Services.CreateScope())
+            {
+                var database = scope.ServiceProvider.GetRequiredService<DbContext>().Database;
+
+                if (database.IsRelational())
+                {
+                    database.Migrate();
+                }
+
+                return host;
+            }
+        }
+
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<EntityContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+                options.UseInMemoryDatabase(configuration.GetConnectionString("DefaultConnection"))
                        .UseSnakeCaseNamingConvention());
 
             services.AddHeraldEntityFramework<EntityContext>();
@@ -34,6 +51,13 @@ namespace WebApi.Infrastructure
         public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddRefitService<ICepService>(configuration["WebServices:ICepService"]);
+
+            return services;
+        }
+
+        public static IServiceCollection AddAddMessageQueue(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddMessageQueueSqs(setup => configuration.GetSection("MessageQueueOptions").Bind(setup));
 
             return services;
         }

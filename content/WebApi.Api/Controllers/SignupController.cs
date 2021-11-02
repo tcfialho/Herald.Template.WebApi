@@ -29,7 +29,6 @@ namespace WebApi.Api.Controllers
         public async Task<IActionResult> Post([FromBody] SignupCommand command) 
             => await _mediator.Send(command).ToActionResult();
 
-
         [HttpGet()]
         [ProducesResponseType(typeof(GetAddressByPostalCodeResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
