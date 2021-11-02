@@ -7,7 +7,7 @@ namespace WebApi.Infrastructure.Persistance
 {
     public class EntityContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<Something> Users { get; set; }
 
         public EntityContext()
         {

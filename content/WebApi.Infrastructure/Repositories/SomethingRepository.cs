@@ -8,9 +8,9 @@ using WebApi.Application.Infrastructure.Repositories;
 
 namespace WebApi.Infrastructure.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class SomethingRepository : Repository<Something>, ISomethingRepository
     {
-        public UserRepository(DbContext context) : base(context)
+        public SomethingRepository(DbContext context) : base(context)
         {
         }
     }

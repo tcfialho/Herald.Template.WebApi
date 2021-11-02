@@ -6,7 +6,7 @@ using MediatR;
 
 namespace WebApi.Application.Features.GetAddressByPostalCode
 {
-    public partial class GetAddressByPostalCodeCommand : IRequest<Result<GetAddressByPostalCodeResult>>
+    public partial class GetFromOtherApiCommand : IRequest<Result<GetFromOtherApiResult>>
     {
         [Required]
         public string PostalCode { get; set; }

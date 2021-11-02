@@ -11,20 +11,20 @@ using WebApi.Application.Infrastructure.WebServices;
 
 namespace WebApi.Application.Features.GetAddressByPostalCode
 {
-    public class GetAddressByPostalCodeHandler : IRequestHandler<GetAddressByPostalCodeCommand, Result<GetAddressByPostalCodeResult>>
+    public class GetFromOtherApiHandler : IRequestHandler<GetFromOtherApiCommand, Result<GetFromOtherApiResult>>
     {
         private readonly ICepService _cepService;
 
-        public GetAddressByPostalCodeHandler(ICepService cepService)
+        public GetFromOtherApiHandler(ICepService cepService)
         {
             _cepService = cepService;
         }
 
-        public async Task<Result<GetAddressByPostalCodeResult>> Handle(GetAddressByPostalCodeCommand request, CancellationToken cancellationToken)
+        public async Task<Result<GetFromOtherApiResult>> Handle(GetFromOtherApiCommand request, CancellationToken cancellationToken)
         {
             var cepResponse = await _cepService.GetAddressByCep(new CepRequest(request.PostalCode));
 
-            var result = cepResponse.Adapt<GetAddressByPostalCodeResult>();
+            var result = cepResponse.Adapt<GetFromOtherApiResult>();
 
             return ResultStatus.Sucess(result);
         }

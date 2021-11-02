@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 
-using Herald.MessageQueue.Sqs;
+using Herald.MessageQueue.RabbitMq;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,7 +43,7 @@ namespace WebApi.Infrastructure
 
             services.AddHeraldEntityFramework<EntityContext>();
 
-            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ISomethingRepository, SomethingRepository>();
 
             return services;
         }
@@ -55,9 +55,9 @@ namespace WebApi.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddAddMessageQueue(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddQueues(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMessageQueueSqs(setup => configuration.GetSection("MessageQueueOptions").Bind(setup));
+            services.AddMessageQueueRabbitMq(setup => configuration.GetSection("MessageQueueOptions").Bind(setup));
 
             return services;
         }

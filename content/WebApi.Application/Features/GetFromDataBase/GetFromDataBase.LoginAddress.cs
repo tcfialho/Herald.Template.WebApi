@@ -2,7 +2,7 @@
 
 namespace WebApi.Application.Login
 {
-    public partial class LoginCommand
+    public partial class GetFromDataBaseCommand
     {
         public class LoginAddress
         {

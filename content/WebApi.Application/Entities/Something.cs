@@ -2,13 +2,13 @@
 
 namespace WebApi.Application.Entities
 {
-    public class OtherThing
+    public class Something
     {
-        protected OtherThing()
+        protected Something()
         {
         }
 
-        public OtherThing(string description)
+        public Something(string description, OtherThing postalAddress)
         {
             Id = Guid.NewGuid();
             Description = description;
@@ -16,5 +16,6 @@ namespace WebApi.Application.Entities
 
         public Guid Id { get; protected set; }
         public string Description { get; protected set; }
+        public virtual OtherThing OtherThing { get; protected set; }
     }
 }

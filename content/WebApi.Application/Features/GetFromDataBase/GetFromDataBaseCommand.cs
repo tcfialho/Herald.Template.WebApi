@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 using Herald.Result;
-
 using MediatR;
+
+using WebApi.Application.Entities;
 
 namespace WebApi.Application.Login
 {
-    public partial class LoginCommand : IRequest<Result>
+    public partial class GetFromDataBaseCommand : IRequest<Result<IList<Something>>>
     {
         [Required]
         public string Name { get; set; }

@@ -1,7 +1,4 @@
-﻿
-using System.Reflection;
-
-using Herald.MessageQueue.Sqs;
+﻿using System.Reflection;
 
 using MediatR;
 

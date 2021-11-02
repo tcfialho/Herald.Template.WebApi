@@ -29,6 +29,7 @@ namespace WebApi.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddFeatures(Configuration);
+            services.AddQueues(Configuration);
             services.AddWebServices(Configuration);
             services.AddRepositories(Configuration);
 
