@@ -27,7 +27,7 @@ namespace WebApi.Api.Controllers
         }
 
         [HttpPost()]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody] SendToQueueCommand command) 
             => await _mediator.Send(command).ToActionResult();

@@ -14,7 +14,7 @@ namespace WebApi.Application.Entities
             Description = description;
         }
 
-        public Guid Id { get; protected set; }
-        public string Description { get; protected set; }
+        public virtual Guid Id { get; protected set; }
+        public virtual string Description { get; protected set; }
     }
 }

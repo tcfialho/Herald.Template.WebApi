@@ -4,6 +4,7 @@ using System.Net.Http;
 using Herald.MessageQueue.RabbitMq;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,8 +39,11 @@ namespace WebApi.Infrastructure
         public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<EntityContext>(options =>
-                options.UseInMemoryDatabase(configuration.GetConnectionString("DefaultConnection"))
-                       .UseSnakeCaseNamingConvention());
+            {
+                options.UseLazyLoadingProxies();
+                options.UseChangeTrackingProxies();
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")).UseSnakeCaseNamingConvention();
+            });
 
             services.AddHeraldEntityFramework<EntityContext>();
 
