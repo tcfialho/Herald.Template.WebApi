@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Castle.Core.Internal;
+using Castle.Core.Logging;
 
 using Herald.MessageQueue.RabbitMq;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
+using Polly;
+using Polly.Contrib.WaitAndRetry;
+using Polly.Extensions.Http;
 
 using Refit;
 
@@ -54,7 +64,7 @@ namespace WebApi.Infrastructure
 
         public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddRefitService<ICepService>(configuration["WebServices:ICepService"]);
+            services.AddRefitClient<ICepService>(configuration);
 
             return services;
         }
@@ -65,37 +75,51 @@ namespace WebApi.Infrastructure
 
             return services;
         }
-
-        private static IServiceCollection AddRefitService<TService>(this IServiceCollection services, string baseAddress, bool disableServerCertificateValidator = false, DelegatingHandler delegatingHandler = null, JsonSerializerSettings jsonSerializerSettings = null) where TService : class
+        public static IHttpClientBuilder AddRefitClient<T>(this IServiceCollection services, IConfiguration configuration, RefitSettings settings = null) where T : class
         {
-            RefitSettings refitSettings = null;
+            var typeName = typeof(T).Name;
 
-            if (jsonSerializerSettings != null)
+            RequiredConfiguration<T>(configuration, $"WebServices:{typeName}:InitialDelay");
+            RequiredConfiguration<T>(configuration, $"WebServices:{typeName}:RetryCount");
+            RequiredConfiguration<T>(configuration, $"WebServices:{typeName}:Url");
+
+            int.TryParse(configuration[$"WebServices:{typeName}:InitialDelay"], out int initialDelay);
+            int.TryParse(configuration[$"WebServices:{typeName}:RetryCount"], out int retryCount);
+
+            var retryDelay = Backoff.ExponentialBackoff(TimeSpan.FromSeconds(initialDelay), retryCount);
+
+            return services.AddRefitClient<ICepService>(settings)
+                    .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration[$"WebServices:{typeName}:Url"]))
+                    .ConfigurePrimaryHttpMessageHandler(h => new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    })
+                    .AddPolicyHandler((services, request) => HttpPolicyExtensions.HandleTransientHttpError().OrResult(r => !r.IsSuccessStatusCode)
+                    .WaitAndRetryAsync(retryDelay, onRetry: (response, timespan, retryAttempt, context) =>
+                    {
+                        var logger = services.GetRequiredService<ILogger<ICepService>>();
+                        var content = request?.Content?.ReadAsStringAsync()?.Result;
+                        logger.LogWarning($"Delaying request {request.RequestUri.OriginalString} for {timespan.TotalSeconds} seconds then making retry {retryAttempt} - statuscode {response?.Result?.StatusCode} - content {content}");
+                    }))
+                    .AddPolicyHandler((services, request) => HttpPolicyExtensions.HandleTransientHttpError()
+                    .FallbackAsync(
+                        (response, context, cancellationToken) => Task.FromResult(response.Result),
+                        (context, cancellationToken) =>
+                        {
+                            var logger = services.GetRequiredService<ILogger<ICepService>>();
+                            logger.LogError(context.Exception, $"Error while processing request {request.RequestUri.OriginalString}");
+                            throw context.Exception;
+                        }
+                    ));
+        }
+
+        private static void RequiredConfiguration<T>(IConfiguration configuration, string configurationPath) where T : class
+        {
+            var _initialDelay = configuration[configurationPath];
+            if (string.IsNullOrEmpty(_initialDelay))
             {
-                refitSettings = new RefitSettings
-                {
-                    ContentSerializer = new NewtonsoftJsonContentSerializer(jsonSerializerSettings)
-                };
+                throw new ArgumentNullException(configurationPath);
             }
-
-            var clientBuilder = jsonSerializerSettings == null ? services.AddRefitClient<TService>() : services.AddRefitClient<TService>(refitSettings);
-
-            clientBuilder.ConfigureHttpClient(c => c.BaseAddress = new Uri(baseAddress));
-
-            if (delegatingHandler != null)
-            {
-                clientBuilder.AddHttpMessageHandler(h => delegatingHandler);
-            };
-
-            if (disableServerCertificateValidator)
-            {
-                clientBuilder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-                {
-                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                });
-            }
-
-            return services;
         }
     }
 }
