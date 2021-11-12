@@ -3,9 +3,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Castle.Core.Internal;
-using Castle.Core.Logging;
-
 using Herald.MessageQueue.RabbitMq;
 
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 using Polly;
 using Polly.Contrib.WaitAndRetry;
@@ -75,6 +69,7 @@ namespace WebApi.Infrastructure
 
             return services;
         }
+
         public static IHttpClientBuilder AddRefitClient<T>(this IServiceCollection services, IConfiguration configuration, RefitSettings settings = null) where T : class
         {
             var typeName = typeof(T).Name;
@@ -99,7 +94,7 @@ namespace WebApi.Infrastructure
                     {
                         var logger = services.GetRequiredService<ILogger<ICepService>>();
                         var content = request?.Content?.ReadAsStringAsync()?.Result;
-                        logger.LogWarning($"Delaying request {request.RequestUri.OriginalString} for {timespan.TotalSeconds} seconds then making retry {retryAttempt} - statuscode {response?.Result?.StatusCode} - content {content}");
+                        logger.LogWarning($"Delaying request {request?.Method?.Method} {request?.RequestUri?.OriginalString} for {timespan.TotalSeconds} seconds then making retry {retryAttempt} - statuscode {response?.Result?.StatusCode} - content {content}");
                     }))
                     .AddPolicyHandler((services, request) => HttpPolicyExtensions.HandleTransientHttpError()
                     .FallbackAsync(
@@ -107,8 +102,9 @@ namespace WebApi.Infrastructure
                         (context, cancellationToken) =>
                         {
                             var logger = services.GetRequiredService<ILogger<ICepService>>();
-                            logger.LogError(context.Exception, $"Error while processing request {request.RequestUri.OriginalString}");
-                            throw context.Exception;
+                            logger.LogError(context.Exception, $"Error while processing request {request?.Method?.Method} {request?.RequestUri?.OriginalString}");
+                            if (context.Exception != null) throw context.Exception;
+                            return Task.CompletedTask;
                         }
                     ));
         }
@@ -116,6 +112,7 @@ namespace WebApi.Infrastructure
         private static void RequiredConfiguration<T>(IConfiguration configuration, string configurationPath) where T : class
         {
             var _initialDelay = configuration[configurationPath];
+
             if (string.IsNullOrEmpty(_initialDelay))
             {
                 throw new ArgumentNullException(configurationPath);
