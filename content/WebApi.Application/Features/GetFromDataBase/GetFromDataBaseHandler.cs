@@ -16,13 +16,11 @@ namespace WebApi.Application.Login
     {
         private readonly IUnitOfWork _uow;
         private readonly ISomethingRepository _somethingRepository;
-        private readonly IOtherThingRepository _otherThingRepository;
 
-        public GetFromDataBaseHandler(IUnitOfWork uow, ISomethingRepository somethingRepository, IOtherThingRepository otherThingRepository)
+        public GetFromDataBaseHandler(IUnitOfWork uow, ISomethingRepository somethingRepository)
         {
             _uow = uow;
             _somethingRepository = somethingRepository;
-            _otherThingRepository = otherThingRepository;
         }
 
         public async Task<Result<IList<Something>>> Handle(GetFromDataBaseCommand request, CancellationToken cancellationToken)
