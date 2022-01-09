@@ -14,39 +14,48 @@
     "placeholderFilename": "-.-",
     "symbols": {
         "no-database": {
-			"description": "Put database sample into generated project.",
+            "description": "Put database sample into generated project.",
             "type": "parameter",
-			"dataType":"bool",
-			"defaultValue": "false"
+            "dataType": "bool",
+            "defaultValue": "false"
         },
         "no-queue": {
-			"description": "Put queue sample into generated project.",
+            "description": "Put queue sample into generated project.",
             "type": "parameter",
-			"dataType":"bool",
-			"defaultValue": "false"
+            "dataType": "bool",
+            "defaultValue": "false"
         },
         "no-externalapi": {
-			"description": "Put external api sample into generated project.",
+            "description": "Put external api sample into generated project.",
             "type": "parameter",
-			"dataType":"bool",
-			"defaultValue": "false"
+            "dataType": "bool",
+            "defaultValue": "false"
         },
-		"nodatabase": {
+        "nodatabase": {
             "type": "computed",
-			"value": "(no-database)"
+            "value": "(no-database)"
         },
-		"noqueue": {
+        "noqueue": {
             "type": "computed",
-			"value": "(no-queue)"
+            "value": "(no-queue)"
         },
-		"noexternalapi": {
+        "noexternalapi": {
             "type": "computed",
-			"value": "(no-externalapi)"
+            "value": "(no-externalapi)"
         }
     },
     "primaryOutputs": [{
             "path": "WebApi.Api.sln"
         }
     ],
-    "sources": []
+    "sources": [{
+            "modifiers": [{
+                    "rename": {
+                        "dockerignore": ".dockerignore",
+                        "gitignore": ".gitignore"
+                    }
+                }
+            ]
+        }
+    ]
 }

@@ -4,22 +4,23 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageVersion>1.0</PackageVersion>
 
-    <Title>Herald WebApi Template</Title>
-    <Description>Herald Microservice Template</Description>
+    <Title>Herald Template Web API</Title>
+    <Description>Herald Template Web API</Description>
     <Authors>Thiago Fialho</Authors>
 
-    <PackageId>Herald.Microservice.Template</PackageId>
-    <PackageTags>dotnet-new;templates;microservice</PackageTags>
+    <PackageId>Herald.Template.WebAPI</PackageId>
+    <PackageTags>dotnet-new;herald;template;webapi</PackageTags>
 
     <PackageType>Template</PackageType>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
+	<NoWarn>$(NoWarn);NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="**\*" Exclude="**\bin\**;**\obj\**;**\vs\**" />
-    <Compile Remove="content/**/*.cs" />
+	<Content Include="content\**\*" Exclude="content\**\bin\**;content\**\obj\**;content\**\.vs\**" />
+    <Compile Remove="**\*" />
   </ItemGroup>
 
 </Project>
