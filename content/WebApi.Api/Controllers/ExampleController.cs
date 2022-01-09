@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 
+using Herald.Result;
 using Herald.Result.Mvc;
 
 using MediatR;
@@ -29,21 +30,21 @@ namespace WebApi.Api.Controllers
         [HttpPost()]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] SendToQueueCommand command) 
+        public async Task<IActionResult> SendToQueue([FromBody] SendToQueueCommand command) 
             => await _mediator.Send(command).ToActionResult();
 
         [HttpGet("{PostalCode}")]
         [ProducesResponseType(typeof(GetFromOtherApiResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Get([FromRoute] GetFromOtherApiCommand command) 
+        public async Task<IActionResult> GetFromOtherApi([FromRoute] GetFromOtherApiCommand command) 
             => await _mediator.Send(command).ToActionResult();
 
         [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<Something>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetFromDataBase()
             => await _mediator.Send(new GetFromDataBaseCommand()).ToActionResult();
     }
 }

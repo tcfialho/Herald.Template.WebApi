@@ -45,13 +45,13 @@ namespace WebApi.Infrastructure
             services.AddDbContext<EntityContext>(options =>
             {
                 options.UseLazyLoadingProxies();
-                options.UseChangeTrackingProxies();
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")).UseSnakeCaseNamingConvention();
             });
 
             services.AddHeraldEntityFramework<EntityContext>();
 
             services.AddTransient<ISomethingRepository, SomethingRepository>();
+            services.AddTransient<IOtherThingRepository, OtherThingRepository>();
 
             return services;
         }
@@ -83,7 +83,7 @@ namespace WebApi.Infrastructure
 
             var retryDelay = Backoff.ExponentialBackoff(TimeSpan.FromSeconds(initialDelay), retryCount);
 
-            return services.AddRefitClient<ICepService>(settings)
+            return services.AddRefitClient<T>(settings)
                     .ConfigureHttpClient(c => c.BaseAddress = new Uri(configuration[$"WebServices:{typeName}:Url"]))
                     .ConfigurePrimaryHttpMessageHandler(h => new HttpClientHandler
                     {

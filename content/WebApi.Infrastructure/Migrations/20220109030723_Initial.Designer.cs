@@ -10,7 +10,7 @@ using WebApi.Infrastructure.Persistance;
 namespace WebApi.Infrastructure.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20211103061548_Initial")]
+    [Migration("20220109030723_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace WebApi.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.11")
+                .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("WebApi.Application.Entities.OtherThing", b =>
@@ -33,9 +33,9 @@ namespace WebApi.Infrastructure.Migrations
                         .HasColumnName("description");
 
                     b.HasKey("Id")
-                        .HasName("pk_other_thing");
+                        .HasName("pk_other_things");
 
-                    b.ToTable("other_thing");
+                    b.ToTable("other_things");
                 });
 
             modelBuilder.Entity("WebApi.Application.Entities.Something", b =>
@@ -67,7 +67,7 @@ namespace WebApi.Infrastructure.Migrations
                     b.HasOne("WebApi.Application.Entities.OtherThing", "OtherThing")
                         .WithMany()
                         .HasForeignKey("OtherThingId")
-                        .HasConstraintName("fk_somethings_other_thing_other_thing_id");
+                        .HasConstraintName("fk_somethings_other_things_other_thing_id");
 
                     b.Navigation("OtherThing");
                 });

@@ -8,10 +8,11 @@ namespace WebApi.Application.Entities
         {
         }
 
-        public Something(string description, OtherThing postalAddress)
+        public Something(string description, OtherThing otherThing)
         {
             Id = Guid.NewGuid();
             Description = description;
+            OtherThing = otherThing;
         }
 
         public virtual Guid Id { get; protected set; }

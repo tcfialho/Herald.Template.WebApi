@@ -8,7 +8,7 @@ namespace WebApi.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "other_thing",
+                name: "other_things",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -16,7 +16,7 @@ namespace WebApi.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_other_thing", x => x.id);
+                    table.PrimaryKey("pk_other_things", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -31,9 +31,9 @@ namespace WebApi.Infrastructure.Migrations
                 {
                     table.PrimaryKey("pk_somethings", x => x.id);
                     table.ForeignKey(
-                        name: "fk_somethings_other_thing_other_thing_id",
+                        name: "fk_somethings_other_things_other_thing_id",
                         column: x => x.other_thing_id,
-                        principalTable: "other_thing",
+                        principalTable: "other_things",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -50,7 +50,7 @@ namespace WebApi.Infrastructure.Migrations
                 name: "somethings");
 
             migrationBuilder.DropTable(
-                name: "other_thing");
+                name: "other_things");
         }
     }
 }
