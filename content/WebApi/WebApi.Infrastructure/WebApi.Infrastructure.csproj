@@ -34,41 +34,8 @@
 		<PackageReference Include="Refit.HttpClientFactory" Version="5.2.4" />
 	</ItemGroup>
 	
-	<!--<Choose>
-		<When Condition="$(DefineConstants.Contains('database')) != 'true'">
-			<ItemGroup Condition="'$(database)' != 'true'">
-				<Compile Remove="Migrations\20220109030723_Initial.cs" />
-				<Compile Remove="Migrations\20220109030723_Initial.Designer.cs" />
-				<Compile Remove="Migrations\EntityContextModelSnapshot.cs" />
-				<Compile Remove="Persistance\EntityContext.cs" />
-				<Compile Remove="Repositories\SomethingRepository.cs" />
-			</ItemGroup>
-		</When>
-		<When Condition="$(DefineConstants.Contains('database')) == 'true'">
-			<ItemGroup Condition="'$(database)' == 'true'">
-				<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.13" />
-				<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.13" />
-				<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.13" />
-				<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.13" />
-				<PackageReference Include="EFCore.NamingConventions" Version="5.0.2" />
-				<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
-			</ItemGroup>
-		</When>
-	</Choose>
-	<Choose>
-		<When Condition="$(DefineConstants.Contains('externalapi')) != 'true'">
-			<ItemGroup>
-			</ItemGroup>
-		</When>
-		<When Condition="$(DefineConstants.Contains('externalapi')) == 'true'">
-			<ItemGroup Condition="'$(externalapi)' == 'true'">
-				<PackageReference Include="Refit.HttpClientFactory" Version="5.2.4" />
-			</ItemGroup>
-		</When>
-	</Choose>-->
-	
 	<ItemGroup>
 		<ProjectReference Include="..\WebApi.Application\WebApi.Application.csproj" />
 	</ItemGroup>
-
+	
 </Project>
