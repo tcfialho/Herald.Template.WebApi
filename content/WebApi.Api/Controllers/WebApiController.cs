@@ -18,11 +18,11 @@ namespace WebApi.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ExampleController : ControllerBase
+    public class WebApiController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ExampleController(IMediator mediator)
+        public WebApiController(IMediator mediator)
         {
             _mediator = mediator;
         }

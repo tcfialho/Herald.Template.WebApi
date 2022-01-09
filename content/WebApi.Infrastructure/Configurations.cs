@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Herald.MessageQueue.RabbitMq;
@@ -51,7 +50,6 @@ namespace WebApi.Infrastructure
             services.AddHeraldEntityFramework<EntityContext>();
 
             services.AddTransient<ISomethingRepository, SomethingRepository>();
-            services.AddTransient<IOtherThingRepository, OtherThingRepository>();
 
             return services;
         }
