@@ -2,7 +2,7 @@
 
 using Herald.MessageQueue;
 
-namespace WebApi.Application.PutIntoQueue
+namespace WebApi.Application.Features.SendToQueue
 {
     public class SentToQueueMessage : MessageBase
     {

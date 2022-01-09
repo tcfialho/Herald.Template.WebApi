@@ -2,10 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Herald.EntityFramework;
-using Herald.MessageQueue.RabbitMq;
-
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,17 +11,26 @@ using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Polly.Extensions.Http;
 
-using Refit;
-
-using WebApi.Application.Infrastructure.Repositories;
-using WebApi.Application.Infrastructure.WebServices;
+#if (!nodatabase)
+using Herald.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Infrastructure.Persistance;
 using WebApi.Infrastructure.Repositories;
+using WebApi.Application.Infrastructure.Repositories;
+#endif
+#if (!noqueue)
+using Herald.MessageQueue.RabbitMq;
+#endif
+#if (!noexternalapi)
+using Refit;
+using WebApi.Application.Infrastructure.WebServices;
+#endif
 
 namespace WebApi.Infrastructure
 {
     public static class Configurations
     {
+#if (!nodatabase)
         public static IHost DoEFMigration(this IHost host)
         {
             using (var scope = host.Services.CreateScope())
@@ -55,17 +60,21 @@ namespace WebApi.Infrastructure
 
             return services;
         }
+#endif
 
-        public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddRefitClient<ICepService>(configuration);
-
-            return services;
-        }
-
+#if (!noqueue)
         public static IServiceCollection AddQueues(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMessageQueueRabbitMq(setup => configuration.GetSection("MessageQueueOptions").Bind(setup));
+
+            return services;
+        }
+#endif
+
+#if (!noexternalapi)
+        public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddRefitClient<ICepService>(configuration);
 
             return services;
         }
@@ -118,5 +127,7 @@ namespace WebApi.Infrastructure
                 throw new ArgumentNullException(configurationPath);
             }
         }
+#endif
+
     }
 }

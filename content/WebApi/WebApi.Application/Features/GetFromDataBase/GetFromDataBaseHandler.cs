@@ -10,7 +10,7 @@ using MediatR;
 using WebApi.Application.Entities;
 using WebApi.Application.Infrastructure.Repositories;
 
-namespace WebApi.Application.Login
+namespace WebApi.Application.Features.GetFromDataBase
 {
     public class GetFromDataBaseHandler : IRequestHandler<GetFromDataBaseCommand, Result<IList<Something>>>
     {

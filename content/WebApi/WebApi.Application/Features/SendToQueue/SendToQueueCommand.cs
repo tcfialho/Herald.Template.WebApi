@@ -5,7 +5,7 @@ using Herald.Result;
 
 using MediatR;
 
-namespace WebApi.Application.PutIntoQueue
+namespace WebApi.Application.Features.SendToQueue
 {
     public partial class SendToQueueCommand : IRequest<Result>
     {

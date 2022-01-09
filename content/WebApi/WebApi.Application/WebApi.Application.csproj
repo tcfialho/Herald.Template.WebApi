@@ -1,18 +1,87 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-	<PackageReference Include="Herald.EntityFramework" Version="3.0.0" />
-    <PackageReference Include="Herald.MessageQueue.RabbitMq" Version="7.0.3" />
-    <PackageReference Include="Herald.Result" Version="1.0.0" />
-    <PackageReference Include="Mapster" Version="7.2.0" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Refit" Version="5.2.4" />	
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Entities\" />
+		<Folder Include="Features\" />
+		<Folder Include="Infrastructure\" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Herald.Result" Version="1.0.0" />
+		<PackageReference Include="Mapster" Version="7.2.0" />
+		<PackageReference Include="MediatR" Version="9.0.0" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(nodatabase)' == 'true'">
+		<Compile Remove="Entities\**" />
+		<Compile Remove="Features\GetFromDataBase\**" />
+		<Compile Remove="Infrastructure\Repositories\**" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(nodatabase)' != 'true'">
+		<PackageReference Include="Herald.EntityFramework" Version="3.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(noqueue)' == 'true'">
+		<Compile Remove="Features\SendToQueue\**" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(noqueue)' != 'true'">
+		<PackageReference Include="Herald.MessageQueue.RabbitMq" Version="7.0.3" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(noexternalapi)' == 'true'">
+		<Compile Remove="Features\GetFromExternalApi\**" />
+		<Compile Remove="Infrastructure\WebServices\**" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(noexternalapi)' != 'true'">
+		<PackageReference Include="Refit" Version="5.2.4" />
+	</ItemGroup>
+
+	<!--<Choose>
+		<When Condition="$(DefineConstants.Contains('database')) != 'true'">
+			<ItemGroup Condition="'$(database)' != 'true'">
+				<Compile Remove="Entities\**" />
+				<Compile Remove="Features\GetFromDataBase\**" />
+				<Compile Remove="Infrastructure\Repositories\**" />
+			</ItemGroup>
+		</When>
+		<When Condition="$(DefineConstants.Contains('database')) == 'true'">
+			<ItemGroup Condition="'$(database)' == 'true'">
+				<PackageReference Include="Herald.EntityFramework" Version="3.0.0" />
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(DefineConstants.Contains('queue')) != 'true'">
+			<ItemGroup Condition="'$(queue)' != 'true'">
+				<Compile Remove="Features\SendToQueue\**" />
+			</ItemGroup>
+		</When>
+		<When Condition="$(DefineConstants.Contains('queue')) == 'true'">
+			<ItemGroup Condition="'$(queue)' == 'true'">
+				<PackageReference Include="Herald.MessageQueue.RabbitMq" Version="7.0.3" />
+			</ItemGroup>
+		</When>
+	</Choose>
+	<Choose>
+		<When Condition="$(DefineConstants.Contains('externalapi')) != 'true'">
+			<ItemGroup Condition="'$(externalapi)' != 'true'">
+				<Compile Remove="Features\GetFromExternalApi\**" />
+				<Compile Remove="Infrastructure\WebServices\**" />
+			</ItemGroup>
+		</When>
+		<When Condition="$(DefineConstants.Contains('externalapi')) == 'true'">
+			<ItemGroup Condition="'$(externalapi)' == 'true'">
+				<PackageReference Include="Refit" Version="5.2.4" />
+			</ItemGroup>
+		</When>
+	</Choose>-->
 </Project>

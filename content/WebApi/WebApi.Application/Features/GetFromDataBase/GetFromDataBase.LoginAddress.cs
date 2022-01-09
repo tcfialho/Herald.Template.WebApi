@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.Application.Login
+namespace WebApi.Application.Features.GetFromDataBase
 {
     public partial class GetFromDataBaseCommand
     {

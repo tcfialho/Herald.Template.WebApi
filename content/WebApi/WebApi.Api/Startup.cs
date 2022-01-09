@@ -29,10 +29,15 @@ namespace WebApi.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddFeatures(Configuration);
+#if (!noqueue)
             services.AddQueues(Configuration);
+#endif
+#if (!noexternalapi)
             services.AddWebServices(Configuration);
+#endif
+#if (!nodatabase)
             services.AddRepositories(Configuration);
-
+#endif
             services.AddControllers();
             services.AddSwagger();
             services.AddJaegerTracing();

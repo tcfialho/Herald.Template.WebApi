@@ -10,7 +10,9 @@ namespace WebApi.Api
         public static void Main(string[] args) 
             => CreateHostBuilder(args)
                 .Build()
+#if (!nodatabase)
                 .DoEFMigration()
+#endif
                 .Run();
 
         public static IHostBuilder CreateHostBuilder(string[] args)
