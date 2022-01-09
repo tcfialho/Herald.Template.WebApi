@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageVersion>1.0</PackageVersion>
+
+    <Title>Herald WebApi Template</Title>
+    <Description>Herald Microservice Template</Description>
+    <Authors>Thiago Fialho</Authors>
+
+    <PackageId>Herald.Microservice.Template</PackageId>
+    <PackageTags>dotnet-new;templates;microservice</PackageTags>
+
+    <PackageType>Template</PackageType>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="**\*" Exclude="**\bin\**;**\obj\**;**\vs\**" />
+    <Compile Remove="content/**/*.cs" />
+  </ItemGroup>
+
+</Project>

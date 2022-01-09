@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Herald.EntityFramework;
 using Herald.MessageQueue.RabbitMq;
 
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ using WebApi.Application.Infrastructure.Repositories;
 using WebApi.Application.Infrastructure.WebServices;
 using WebApi.Infrastructure.Persistance;
 using WebApi.Infrastructure.Repositories;
+
 namespace WebApi.Infrastructure
 {
     public static class Configurations

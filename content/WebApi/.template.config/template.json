@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Thiago Fialho",
+  "classifications": [ "Herald", "Template", "WebApi" ],
+  "identity": "Herald.Template.WebApi",
+  "name": "Herald.Template.WebApi",
+  "shortName": "herald-webapi",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourcename" : "WebApi",
+  "preferNameDirectory" : true,
+  "placeholderFilename": "-.-",
+  "symbols": {
+  },
+  "primaryOutputs": [{
+	"path": "WebApi.Api.sln"
+  }],
+  "sources": []
+}
