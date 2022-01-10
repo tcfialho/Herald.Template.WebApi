@@ -15,6 +15,14 @@ See more information in [Nuget](https://www.nuget.org/packages/Herald.Template.W
 
 ## Usage
 
+```
+dotnet new herald-api -n ProjectName -o OutputFolder 
+
+Options:
+  -nd|--no-database     Put database sample into generated project (Default: false).
+  -nq|--no-queue        Put queue sample into generated project (Default: false).
+  -ne|--no-externalapi  Put external api sample into generated project (Default: false).
+```
 ## Credits
 
 Author [**Thiago Fialho**](https://br.linkedin.com/in/thiago-fialho-139ab116)
