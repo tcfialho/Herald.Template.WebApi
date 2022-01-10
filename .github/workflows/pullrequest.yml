@@ -1,4 +1,4 @@
-name: Herald.EntityFramework.PullRequest
+name: Herald.Template.WebApi.PullRequest
 
 on:
   pull_request:

@@ -1,4 +1,4 @@
-name: Herald.EntityFramework.TagRelease
+name: Herald.Template.WebApi.TagRelease
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       id: commit-status
       run: |
         # Check the status of the Git commit
-        CURRENT_STATUS=$(curl --url https://github.com/tcfialho/Herald.EntityFramework/workflows/Herald.EntityFramework/badge.svg | grep -o -m1 'passing\|no status\|failing');
+        CURRENT_STATUS=$(curl --url https://github.com/tcfialho/Herald.Template.WebApi/workflows/Herald.Template.WebApi/badge.svg | grep -o -m1 'passing\|no status\|failing');
         echo "Current status is: $CURRENT_STATUS"
         if [ "${CURRENT_STATUS^^}" != "PASSING" ]; 
           then echo "Canceling execution"; 
