@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+		<UserSecretsId>76f42217-1e5d-423c-ae5c-808fae60f813</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Herald.Observability.Jaeger" Version="1.0.0" />
+		<PackageReference Include="Herald.Result.Mvc" Version="1.0.0" />
+		<PackageReference Include="Herald.Web.Swagger" Version="1.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\WebApi.Application\WebApi.Application.csproj" />
+		<ProjectReference Include="..\WebApi.Infrastructure\WebApi.Infrastructure.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,61 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Thiago Fialho",
+    "classifications": ["Herald", "WebAPI"],
+    "identity": "Herald.Template.WebAPI",
+    "name": "Herald Template Web API",
+    "shortName": "herald-api",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sourcename": "WebApi",
+    "preferNameDirectory": true,
+    "placeholderFilename": "-.-",
+    "symbols": {
+        "no-database": {
+            "description": "Put database sample into generated project.",
+            "type": "parameter",
+            "dataType": "bool",
+            "defaultValue": "false"
+        },
+        "no-queue": {
+            "description": "Put queue sample into generated project.",
+            "type": "parameter",
+            "dataType": "bool",
+            "defaultValue": "false"
+        },
+        "no-externalapi": {
+            "description": "Put external api sample into generated project.",
+            "type": "parameter",
+            "dataType": "bool",
+            "defaultValue": "false"
+        },
+        "nodatabase": {
+            "type": "computed",
+            "value": "(no-database)"
+        },
+        "noqueue": {
+            "type": "computed",
+            "value": "(no-queue)"
+        },
+        "noexternalapi": {
+            "type": "computed",
+            "value": "(no-externalapi)"
+        }
+    },
+    "primaryOutputs": [{
+            "path": "WebApi.Api.sln"
+        }
+    ],
+    "sources": [{
+            "modifiers": [{
+                    "rename": {
+                        "dockerignore": ".dockerignore",
+                        "gitignore": ".gitignore"
+                    }
+                }
+            ]
+        }
+    ]
+}
