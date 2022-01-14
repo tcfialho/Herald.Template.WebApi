@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
     webapi.api:
-        image: ${DOCKER_REGISTRY-}accountsapi
+        image: ${DOCKER_REGISTRY-}webapiapi
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - MessageQueueOptions__HostName=rabbitmq

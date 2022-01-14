@@ -1,4 +1,6 @@
 
+using Herald.ModelBinder;
+using Herald.ModelBinder.Swagger;
 using Herald.Observability.Jaeger.Configurations;
 using Herald.Web.Swagger;
 
@@ -17,7 +19,6 @@ namespace WebApi.Api
     {
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Env { get; }
-
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
@@ -38,8 +39,16 @@ namespace WebApi.Api
 #if (!nodatabase)
             services.AddRepositories(Configuration);
 #endif
-            services.AddControllers();
-            services.AddSwagger();
+            services.AddControllers(options =>
+            {
+                options.ModelBinderProviders.InsertRouteAndQueryBinding();
+                options.ModelBinderProviders.InsertRouteAndBodyBinding();
+            });
+            services.AddSwagger(o => 
+            {
+                o.OperationFilter<FromRouteAndBodyModelOperationFilter>();
+                o.OperationFilter<FromRouteAndQueryModelOperationFilter>();
+            });
             services.AddJaegerTracing();
         }
 
