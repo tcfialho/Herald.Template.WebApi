@@ -15,6 +15,7 @@ using WebApi.Application.Features.GetFromDataBase;
 #endif
 #if (!noqueue)
 using WebApi.Application.Features.SendToQueue;
+using Herald.ModelBinder.RouteAndBody;
 #endif
 #if (!noexternalapi)
 using WebApi.Application.Features.GetAddressByPostalCode;
@@ -58,5 +59,16 @@ namespace WebApi.Api.Controllers
             => await _mediator.Send(command).ToActionResult();
 #endif
 
+        [HttpPost("pj/{cnpj}/status")]
+        public ActionResult<UserDto> Post([FromRouteAndBody] UserDto userDto)
+        {
+            return Ok(userDto);
+        }
+    }
+
+    public class UserDto
+    {
+        public string Cnpj { get; set; }
+        public string Status { get; set; }
     }
 }
