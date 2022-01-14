@@ -8,9 +8,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Herald.ModelBinder" Version="1.0.1" />
+		<PackageReference Include="Herald.ModelBinder.Swagger" Version="1.0.1" />
 		<PackageReference Include="Herald.Observability.Jaeger" Version="1.0.0" />
 		<PackageReference Include="Herald.Result.Mvc" Version="1.0.0" />
-		<PackageReference Include="Herald.Web.Swagger" Version="1.1.0" />
+		<PackageReference Include="Herald.Web.Swagger" Version="1.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
 	</ItemGroup>

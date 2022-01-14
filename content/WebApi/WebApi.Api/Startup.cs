@@ -1,4 +1,5 @@
 
+using Herald.ModelBinder.Swagger;
 using Herald.Observability.Jaeger.Configurations;
 using Herald.Web.Swagger;
 
@@ -39,7 +40,11 @@ namespace WebApi.Api
             services.AddRepositories(Configuration);
 #endif
             services.AddControllers();
-            services.AddSwagger();
+            services.AddSwagger(o => 
+            {
+                o.OperationFilter<FromRouteAndBodyModelOperationFilter>();
+                o.OperationFilter<FromRouteAndQueryModelOperationFilter>();
+            });
             services.AddJaegerTracing();
         }
 
