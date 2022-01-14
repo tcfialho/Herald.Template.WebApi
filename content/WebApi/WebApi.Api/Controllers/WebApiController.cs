@@ -58,17 +58,5 @@ namespace WebApi.Api.Controllers
         public async Task<IActionResult> GetFromExternalApi([FromRoute] GetFromExternalApiCommand command) 
             => await _mediator.Send(command).ToActionResult();
 #endif
-
-        [HttpPost("pj/{cnpj}/status")]
-        public ActionResult<UserDto> Post([FromRouteAndBody] UserDto userDto)
-        {
-            return Ok(userDto);
-        }
-    }
-
-    public class UserDto
-    {
-        public string Cnpj { get; set; }
-        public string Status { get; set; }
     }
 }
