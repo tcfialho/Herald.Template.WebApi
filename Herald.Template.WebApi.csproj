@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageVersion>1.0</PackageVersion>
 
     <Title>Herald Template Web API</Title>
     <Description>Herald Template Web API</Description>
