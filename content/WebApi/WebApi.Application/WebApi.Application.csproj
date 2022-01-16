@@ -6,7 +6,6 @@
 
 	<ItemGroup>
 		<Folder Include="Entities\" />
-		<Folder Include="Features\" />
 		<Folder Include="Infrastructure\" />
 	</ItemGroup>
 
@@ -33,7 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(noqueue)' != 'true'">
-		<PackageReference Include="Herald.MessageQueue.RabbitMq" Version="7.0.3" />
+		<PackageReference Include="Herald.MessageQueue.Sqs" Version="7.0.3" />
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(noexternalapi)' == 'true'">
