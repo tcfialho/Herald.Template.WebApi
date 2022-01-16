@@ -1,34 +1,15 @@
 version: '3.4'
 
 services:
-    webapi.api:
-        image: ${DOCKER_REGISTRY-}webapiapi
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Development
-            - MessageQueueOptions__HostName=rabbitmq
-            - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=postgres;User Id=admin;Password=password;
+    localstack:
+        image: localstack/localstack:0.11.2
         ports:
-            - "5000:80"
-        build:
-            context: .
-            dockerfile: WebApi.Api/Dockerfile
-        depends_on:
-            - rabbitmq
-            - rabbitmq-create-queues
-        links: ["rabbitmq", "rabbitmq-create-queues"]
-
-    rabbitmq:
-        image: 'rabbitmq:3-management-alpine'
-        hostname: rabbitmq
+            - "4566:4566"
         environment:
-            - RABBITMQ_DEFAULT_USER=myUserName
-            - RABBITMQ_DEFAULT_PASS=myPassword
-        ports:
-            - '15672:15672'
-            - '5672:5672'
-        expose:
-            - 15672
-            - 5672
+            - SERVICES=sqs
+            - AWS_ACCESS_KEY_ID=guest
+            - AWS_SECRET_ACCESS_KEY=guest
+            - AWS_DEFAULT_REGION=us-east-1
 
     postgres:
         image: postgres:12-alpine
@@ -39,19 +20,24 @@ services:
             POSTGRES_USER: "admin"
             POSTGRES_PASSWORD: "password"
 
-    rabbitmq-create-queues:
-        image: activatedgeek/rabbitmqadmin:latest
+    localstack-create-queues:
+        image: amazon/aws-cli:2.0.28
+        environment:
+            - AWS_ACCESS_KEY_ID=guest
+            - AWS_SECRET_ACCESS_KEY=guest
+            - AWS_DEFAULT_REGION=us-east-1
         depends_on:
-            - rabbitmq
-        links: ["rabbitmq"]
-        hostname: rabbitmq-create-queues
+            - localstack
+        links: ["localstack"]
+        hostname: localstack-create-queues
         entrypoint: /bin/sh -c
         command: >
             "
-              while ! nc -z rabbitmq 5672; do echo waiting; sleep 3; done;
-              rabbitmqadmin --host rabbitmq -umyUserName -pmyPassword declare exchange name=SentToQueueExchange type=fanout
-              rabbitmqadmin --host rabbitmq -umyUserName -pmyPassword declare queue name=SentToQueueMessage durable=false
-              rabbitmqadmin --host rabbitmq -umyUserName -pmyPassword declare binding source="SentToQueueExchange" destination="SentToQueueMessage" destination_type="queue"
-              rabbitmqadmin --host rabbitmq -umyUserName -pmyPassword list queues
-              echo 'RABBIT-DONE!' 
+                while ! aws --endpoint-url=http://localstack:4566 sqs list-queues > /dev/null; do echo waiting; sleep 3; done;
+                aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name GetFromDataBaseMessageQueue.fifo --attributes FifoQueue=true
+                aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name GetFromExternalApiMessageQueue.fifo --attributes FifoQueue=true
+                aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name SendToQueueMessageQueue.fifo --attributes FifoQueue=true
+                aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name SentToQueueMessageQueue.fifo --attributes FifoQueue=true
+                aws --endpoint-url=http://localstack:4566 sqs list-queues
+                echo 'SQS-DONE!' 
             "

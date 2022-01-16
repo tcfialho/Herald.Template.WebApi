@@ -21,7 +21,7 @@ namespace WebApi.Application.Features.SendToQueue
 
         public async Task<Result> Handle(SendToQueueCommand request, CancellationToken cancellationToken)
         {
-            await _queue.Send(request.Adapt<SentToQueueMessage>());
+            await _queue.Send(request.Adapt<SendToQueueMessage>());
 
             return ResultStatus.Sucess();
         }
