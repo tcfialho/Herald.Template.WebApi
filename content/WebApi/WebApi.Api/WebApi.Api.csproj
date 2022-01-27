@@ -8,6 +8,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Remove="**\.keep" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Herald.ModelBinder" Version="1.0.1" />
 		<PackageReference Include="Herald.ModelBinder.Swagger" Version="1.0.1" />
 		<PackageReference Include="Herald.Observability.Jaeger" Version="1.0.0" />

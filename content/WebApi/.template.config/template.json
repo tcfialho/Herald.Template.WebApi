@@ -11,7 +11,7 @@
     },
     "sourcename": "WebApi",
     "preferNameDirectory": true,
-    "placeholderFilename": "-.-",
+    "placeholderFilename": ".keep",
     "symbols": {
         "no-database": {
             "description": "Put database sample into generated project.",
@@ -49,11 +49,32 @@
         }
     ],
     "sources": [{
+
             "modifiers": [{
                     "rename": {
                         "dockerignore": ".dockerignore",
                         "gitignore": ".gitignore"
                     }
+                }, {
+                    "condition": "(nodatabase)",
+                    "exclude": [
+                        "**/GetFromDataBase/**/*",
+						"**/Migrations/**/*",
+						"**/Persistance/**/*",
+						"**/Repositories/**/*",
+						"**/Entities/*.cs"
+                    ]
+                }, {
+                    "condition": "(noqueue)",
+                    "exclude": [
+                        "**/SendToQueue/**/*"
+                    ]
+                }, {
+                    "condition": "(noexternalapi)",
+                    "exclude": [
+                        "**/GetFromExternalApi/**/*",
+						"**/WebServices/**/*"
+                    ]
                 }
             ]
         }
