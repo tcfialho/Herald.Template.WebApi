@@ -49,7 +49,6 @@
         }
     ],
     "sources": [{
-
             "modifiers": [{
                     "rename": {
                         "dockerignore": ".dockerignore",
@@ -59,10 +58,10 @@
                     "condition": "(nodatabase)",
                     "exclude": [
                         "**/GetFromDataBase/**/*",
-						"**/Migrations/**/*",
-						"**/Persistance/**/*",
-						"**/Repositories/**/*",
-						"**/Entities/*.cs"
+                        "**/Migrations/**/*",
+                        "**/Persistance/**/*",
+                        "**/Repositories/**/*",
+                        "**/Entities/*.cs"
                     ]
                 }, {
                     "condition": "(noqueue)",
@@ -73,10 +72,31 @@
                     "condition": "(noexternalapi)",
                     "exclude": [
                         "**/GetFromExternalApi/**/*",
-						"**/WebServices/**/*"
+                        "**/WebServices/**/*"
                     ]
                 }
             ]
         }
-    ]
+    ],
+    "SpecialCustomOperations": {
+        "**/*.yml": {
+            "operations": [{
+                    "type": "conditional",
+                    "configuration": {
+                        "if": ["#if"],
+                        "else": ["#else"],
+                        "elseif": ["#elseif"],
+                        "endif": ["#endif"],
+                        "actionableIf": ["##if"],
+                        "actionableElse": ["##else"],
+                        "actionableElseif": ["##elseif"],
+                        "actions": ["uncomment", "reduceComment"],
+                        "trim": "true",
+                        "wholeLine": "true",
+                        "evaluator": "C++"
+                    }
+                }
+            ]
+        }
+    }
 }

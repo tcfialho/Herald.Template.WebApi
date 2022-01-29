@@ -7,10 +7,10 @@ services:
         environment:
             - ASPNETCORE_URLS=https://+:443;http://+:80
             - ASPNETCORE_ENVIRONMENT=Development
+#if (!noqueue)
             - AWS_ACCESS_KEY_ID=guest
             - AWS_SECRET_ACCESS_KEY=guest
             - AWS_DEFAULT_REGION=us-east-1
-            - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=postgres;User Id=admin;Password=password;
             - MessageQueueOptions__ServiceURL=http://localstack:4566
             - MessageQueueOptions__Region=us-east-1
             - MessageQueueOptions__GroupId=WorkerService
@@ -18,6 +18,10 @@ services:
             - MessageQueueOptions__VisibilityTimeout=1
             - MessageQueueOptions__EnableFifo=true
             - MessageQueueOptions__RequestDelaySeconds=2
+#endif
+#if (!nodatabase)
+            - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=postgres;User Id=admin;Password=password;
+#endif
         build:
             context: .
             dockerfile: WebApi.Api/Dockerfile
