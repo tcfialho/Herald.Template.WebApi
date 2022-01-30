@@ -33,19 +33,19 @@
             ]
         },
         "no-database": {
-            "description": "Put database sample into generated project.",
+            "description": "Removes database sample into generated project.",
             "type": "parameter",
             "dataType": "bool",
             "defaultValue": "false"
         },
         "no-queue": {
-            "description": "Put queue sample into generated project.",
+            "description": "Removes queue sample into generated project.",
             "type": "parameter",
             "dataType": "bool",
             "defaultValue": "false"
         },
         "no-externalapi": {
-            "description": "Put external api sample into generated project.",
+            "description": "Removes external api sample into generated project.",
             "type": "parameter",
             "dataType": "bool",
             "defaultValue": "false"
