@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
@@ -17,10 +17,16 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="3.1.0">
+		<PackageReference Include="coverlet.collector" Version="3.1.1">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\WebApi.Api\WebApi.Api.csproj" />
+	  <ProjectReference Include="..\WebApi.Application\WebApi.Application.csproj" />
+	  <ProjectReference Include="..\WebApi.Infrastructure\WebApi.Infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>

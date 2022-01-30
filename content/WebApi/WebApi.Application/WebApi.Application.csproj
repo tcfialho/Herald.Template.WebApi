@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
 		<None Remove="**\.keep" />
 	</ItemGroup>
@@ -17,9 +16,9 @@
 	<ItemGroup>
 		<PackageReference Include="Herald.Result" Version="1.0.0" />
 		<PackageReference Include="Mapster" Version="7.2.0" />
-		<PackageReference Include="MediatR" Version="9.0.0" />
-		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+		<PackageReference Include="MediatR" Version="10.0.1" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(nodatabase)' != 'true'">
@@ -30,8 +29,9 @@
 		<PackageReference Include="Herald.MessageQueue.Sqs" Version="8.1.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(noexternalapi)' != 'true'">
-		<PackageReference Include="Refit" Version="5.2.4" />
+	<ItemGroup Condition=" '$(noexternalapi)' != 'true'">
+		<PackageReference Condition="'$(framework)' == 'net6.0'" Include="Refit" Version="6.2.16" />
+		<PackageReference Condition="'$(framework)' != 'net6.0'" Include="Refit" Version="5.2.4" />
 	</ItemGroup>
 
 </Project>

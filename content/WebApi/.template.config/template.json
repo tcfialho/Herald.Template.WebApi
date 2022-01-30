@@ -13,6 +13,25 @@
     "preferNameDirectory": true,
     "placeholderFilename": ".keep",
     "symbols": {
+        "framework": {
+            "type": "parameter",
+            "description": "The target framework for the project, eq: net6.0/net5.0/netcoreapp3.1",
+            "datatype": "choice",
+            "replaces": "netcoreapp3.1",
+            "isRequired": true,
+            "defaultValue": "netcoreapp3.1",
+            "choices": [{
+                    "choice": "net6.0",
+                    "description": ".NET 6.0"
+                }, {
+                    "choice": "net5.0",
+                    "description": ".NET 5.0"
+                }, {
+                    "choice": "netcoreapp3.1",
+                    "description": ".NET Core 3.1"
+                }
+            ]
+        },
         "no-database": {
             "description": "Put database sample into generated project.",
             "type": "parameter",
@@ -73,6 +92,36 @@
                     "exclude": [
                         "**/GetFromExternalApi/**/*",
                         "**/WebServices/**/*"
+                    ]
+                }, {
+                    "condition": "(framework == \"net6.0\")",
+                    "rename": {
+                        "Dockerfile60": "Dockerfile"
+                    },
+                    "exclude": [
+                        "**/Dockerfile",
+                        "**/Dockerfile31",
+                        "**/Dockerfile50"
+                    ]
+                }, {
+                    "condition": "(framework == \"net5.0\")",
+                    "rename": {
+                        "Dockerfile50": "Dockerfile"
+                    },
+                    "exclude": [
+                        "**/Dockerfile",
+                        "**/Dockerfile31",
+                        "**/Dockerfile60"
+                    ]
+                }, {
+                    "condition": "(framework == \"netcoreapp3.1\")",
+                    "rename": {
+                        "Dockerfile31": "Dockerfile"
+                    },
+                    "exclude": [
+                        "**/Dockerfile",
+                        "**/Dockerfile50",
+                        "**/Dockerfile60"
                     ]
                 }
             ]
