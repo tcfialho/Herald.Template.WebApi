@@ -1,4 +1,3 @@
-
 using Herald.ModelBinder;
 using Herald.ModelBinder.Swagger;
 using Herald.Observability.Jaeger.Configurations;
@@ -49,7 +48,8 @@ namespace WebApi.Api
                 o.OperationFilter<FromRouteAndBodyModelOperationFilter>();
                 o.OperationFilter<FromRouteAndQueryModelOperationFilter>();
             });
-            services.AddJaegerTracing();
+
+            services.AddJaegerTracing(setup => Configuration.GetSection("JaegerOptions").Bind(setup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
