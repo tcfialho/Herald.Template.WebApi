@@ -1,8 +1,5 @@
 ﻿
-using System;
-
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 using WebApi.Application.Entities;
 
