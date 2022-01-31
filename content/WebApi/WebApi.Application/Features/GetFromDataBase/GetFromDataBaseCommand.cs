@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 using Herald.Result;
+
 using MediatR;
 
 using WebApi.Application.Entities;

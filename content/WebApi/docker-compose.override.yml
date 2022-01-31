@@ -7,6 +7,8 @@ services:
         environment:
             - ASPNETCORE_URLS=https://+:443;http://+:80
             - ASPNETCORE_ENVIRONMENT=Development
+            - JaegerOptions__SamplingEndpoint=http://jaeger:5778
+            - JaegerOptions__Endpoint=http://jaeger:14268/api/traces
 #if (!noqueue)
             - AWS_ACCESS_KEY_ID=guest
             - AWS_SECRET_ACCESS_KEY=guest
