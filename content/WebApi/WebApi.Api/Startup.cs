@@ -50,6 +50,7 @@ namespace WebApi.Api
             });
 
             services.AddJaegerTracing(setup => Configuration.GetSection("JaegerOptions").Bind(setup));
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
