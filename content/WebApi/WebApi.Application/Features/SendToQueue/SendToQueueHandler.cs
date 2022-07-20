@@ -1,7 +1,9 @@
-﻿using System.Threading;
+﻿#if (sqs || kafka || rabbitmq || azure)
+using System.Threading;
 using System.Threading.Tasks;
 
 using Herald.MessageQueue;
+
 using Herald.Result;
 
 using Mapster;
@@ -27,3 +29,4 @@ namespace WebApi.Application.Features.SendToQueue
         }
     }
 }
+#endif

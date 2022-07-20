@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if (sqs || kafka || rabbitmq || azure)
+using System;
 
 using Herald.MessageQueue;
 
@@ -15,3 +16,4 @@ namespace WebApi.Application.Features.SendToQueue
         public string Description { get; set; }
     }
 }
+#endif

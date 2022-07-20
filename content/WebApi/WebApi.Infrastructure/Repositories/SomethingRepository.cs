@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿#if (postgre || mysql || sqlserver)
+using System.Linq;
 
 using Herald.EntityFramework.Repositories;
 
@@ -18,3 +19,4 @@ namespace WebApi.Infrastructure.Repositories
         }
     }
 }
+#endif

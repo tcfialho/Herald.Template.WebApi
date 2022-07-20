@@ -10,7 +10,7 @@ namespace WebApi.Api
         public static void Main(string[] args) 
             => CreateHostBuilder(args)
                 .Build()
-#if (!nodatabase)
+#if (postgre || mysql || sqlserver)
                 .DoEFMigration()
 #endif
                 .Run();

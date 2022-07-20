@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+    webapi.api:
+        image: ${DOCKER_REGISTRY-}webapiapi
+        restart: unless-stopped
+        environment:
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_ENVIRONMENT=Development
+            - JaegerOptions__SamplingEndpoint=http://jaeger:5778
+            - JaegerOptions__Endpoint=http://jaeger:14268/api/traces
+#if (sqs)
+            - AWS_ACCESS_KEY_ID=guest
+            - AWS_SECRET_ACCESS_KEY=guest
+            - AWS_DEFAULT_REGION=us-east-1
+            - MessageQueueSqsOptions__ServiceURL=http://localstack:4566
+#endif
+#if (kafka)
+            - MessageQueueKafkaOptions__BootstrapServers=kafka:29092
+#endif
+#if (rabbitmq)
+            - MessageQueueRabbitMqOptions__HostName=rabbitmq
+#endif
+#if (azure)
+            - MessageQueueAzureOptions__ConnectionString=UseDevelopmentStorage=true;DevelopmentStorageProxyUri=http://host.docker.internal;
+#endif
+#if (postgre)
+            - ConnectionStrings__PostgreConnection=Server=postgre;Port=5432;Database=database;User Id=admin;Password=password;
+#endif
+#if (mysql)
+            - ConnectionStrings__MySqlConnection=Server=mysql;Port=3306;database=database;uid=root;pwd=password;
+#endif
+#if (sqlserver)
+            - ConnectionStrings__SqlServerConnection=Server=sqlserver,1433;Database=database;User Id=sa;Password=P@ssw0rd;
+#endif
+        build:
+            context: ..
+            dockerfile: WebApi.Api/Dockerfile
+        ports:
+            - "5000:80"
+            - "5001:443"
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

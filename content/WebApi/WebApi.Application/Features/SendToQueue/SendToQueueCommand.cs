@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#if (sqs || kafka || rabbitmq || azure)
+using System.ComponentModel.DataAnnotations;
 
 using Herald.Result;
 
@@ -12,3 +13,4 @@ namespace WebApi.Application.Features.SendToQueue
         public string Description { get; set; }
     }
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if (postgre || mysql || sqlserver)
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,3 +32,4 @@ namespace WebApi.Application.Features.GetFromDataBase
         }
     }
 }
+#endif

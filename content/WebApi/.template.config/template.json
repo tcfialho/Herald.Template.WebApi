@@ -1,13 +1,12 @@
 {
     "$schema": "http://json.schemastore.org/template",
-    "author": "Thiago Fialho",
     "classifications": ["Herald", "WebAPI"],
     "identity": "Herald.Template.WebAPI",
     "name": "Herald Template Web API",
     "shortName": "herald-api",
     "tags": {
-        "language": "C#",
-        "type": "project"
+        "type": "solution",
+        "language": "C#"
     },
     "sourcename": "WebApi",
     "preferNameDirectory": true,
@@ -15,11 +14,10 @@
     "symbols": {
         "framework": {
             "type": "parameter",
-            "description": "The target framework for the project, eq: net6.0/net5.0/netcoreapp3.1",
+            "description": "The target framework for the project.",
             "datatype": "choice",
             "replaces": "netcoreapp3.1",
-            "isRequired": true,
-            "defaultValue": "netcoreapp3.1",
+            "defaultValue": "net6.0",
             "choices": [{
                     "choice": "net6.0",
                     "description": ".NET 6.0"
@@ -32,17 +30,84 @@
                 }
             ]
         },
-        "no-database": {
-            "description": "Removes database sample into generated project.",
+        "queue": {
             "type": "parameter",
-            "dataType": "bool",
-            "defaultValue": "false"
+            "description": "Includes/removes the queue sample into generated project.",
+            "datatype": "choice",
+            "defaultValue": "sqs",
+            "choices": [{
+                    "choice": "none",
+                    "description": "No queue"
+                }, {
+                    "choice": "sqs",
+                    "description": "Amazon SQS"
+                }, {
+                    "choice": "kafka",
+                    "description": "Apache Kafka"
+                }, {
+                    "choice": "rabbitmq",
+                    "description": "RabbitMQ"
+                }, {
+                    "choice": "azure",
+                    "description": "Azure Queue Storage"
+                }
+            ]
         },
-        "no-queue": {
-            "description": "Removes queue sample into generated project.",
+        "database": {
             "type": "parameter",
-            "dataType": "bool",
-            "defaultValue": "false"
+            "description": "Includes/removes the queue sample into generated project.",
+            "datatype": "choice",
+            "defaultValue": "postgre",
+            "choices": [{
+                    "choice": "none",
+                    "description": "No queue"
+                }, {
+                    "choice": "postgre",
+                    "description": "PostgreSQL"
+                }, {
+                    "choice": "mysql",
+                    "description": "MySQL"
+                }, {
+                    "choice": "sqlserver",
+                    "description": "MS SQL Server"
+                }
+            ]
+        },
+        "noqueue": {
+            "type": "computed",
+            "value": "(queue == \"none\")"
+        },
+        "sqs": {
+            "type": "computed",
+            "value": "(queue == 'sqs')"
+        },
+        "kafka": {
+            "type": "computed",
+            "value": "(queue == \"kafka\")"
+        },
+        "rabbitmq": {
+            "type": "computed",
+            "value": "(queue == \"rabbitmq\")"
+        },
+        "azure": {
+            "type": "computed",
+            "value": "(queue == \"azure\")"
+        },
+        "nodatabase": {
+            "type": "computed",
+            "value": "(database == 'none')"
+        },
+        "postgre": {
+            "type": "computed",
+            "value": "(database == 'postgre')"
+        },
+        "mysql": {
+            "type": "computed",
+            "value": "(database == 'mysql')"
+        },
+        "sqlserver": {
+            "type": "computed",
+            "value": "(database == 'sqlserver')"
         },
         "no-externalapi": {
             "description": "Removes external api sample into generated project.",
@@ -50,29 +115,47 @@
             "dataType": "bool",
             "defaultValue": "false"
         },
-        "nodatabase": {
-            "type": "computed",
-            "value": "(no-database)"
-        },
-        "noqueue": {
-            "type": "computed",
-            "value": "(no-queue)"
-        },
         "noexternalapi": {
             "type": "computed",
             "value": "(no-externalapi)"
-        }
+        },
+		"HostIdentifier": {
+			"type": "bind",
+			"binding": "HostIdentifier"
+		}
     },
-    "primaryOutputs": [{
-            "path": "WebApi.Api.sln"
-        }
+    "primaryOutputs": [
+		{ "path": "WebApi.sln" },
+		{ 
+			"condition": "(HostIdentifier != \"dotnetcli\" && HostIdentifier != \"dotnetcli-preview\")",
+			"path": "WebApi.Api.sln" 
+		},
     ],
     "sources": [{
             "modifiers": [{
+                    "condition": "(HostIdentifier == \"dotnetcli\" ||  HostIdentifier == \"dotnetcli-preview\")",
+                    "rename": {
+                        "WebApi.Api.sln": "WebApi.sln"
+                    }
+                }, {
+                    "exclude": [
+                        "**/.vs/**/*",
+                    ],
                     "rename": {
                         "dockerignore": ".dockerignore",
                         "gitignore": ".gitignore"
                     }
+                }, {
+                    "condition": "(noexternalapi)",
+                    "exclude": [
+                        "**/GetFromExternalApi/**/*",
+                        "**/WebServices/**/*"
+                    ]
+                }, {
+                    "condition": "(noqueue)",
+                    "exclude": [
+                        "**/SendToQueue/**/*"
+                    ]
                 }, {
                     "condition": "(nodatabase)",
                     "exclude": [
@@ -81,17 +164,6 @@
                         "**/Persistance/**/*",
                         "**/Repositories/**/*",
                         "**/Entities/*.cs"
-                    ]
-                }, {
-                    "condition": "(noqueue)",
-                    "exclude": [
-                        "**/SendToQueue/**/*"
-                    ]
-                }, {
-                    "condition": "(noexternalapi)",
-                    "exclude": [
-                        "**/GetFromExternalApi/**/*",
-                        "**/WebServices/**/*"
                     ]
                 }, {
                     "condition": "(framework == \"net6.0\")",
@@ -139,13 +211,47 @@
                         "actionableIf": ["##if"],
                         "actionableElse": ["##else"],
                         "actionableElseif": ["##elseif"],
-                        "actions": ["uncomment", "reduceComment"],
-                        "trim": "true",
-                        "wholeLine": "true",
-                        "evaluator": "C++"
+                        "actions": ["uncommentYml", "reduceCommentYml"],
+                        "trim": true,
+                        "wholeLine": true
+                    }
+                }
+            ]
+        },
+        "**/*.json": {
+            "operations": [{
+                    "type": "conditional",
+                    "configuration": {
+                        "if": ["//#if"],
+                        "else": ["//#else"],
+                        "elseif": ["//#elseif"],
+                        "endif": ["//#endif"],
+                        "actionableIf": ["//##if"],
+                        "actionableElse": ["//##else"],
+                        "actionableElseif": ["//##elseif"],
+                        "actions": ["cStyleUncomment"],
+                        "trim": true,
+                        "wholeLine": true
+                    }
+                }, {
+                    "type": "replacement",
+                    "configuration": {
+                        "id": "cStyleUncomment",
+                        "original": "//////",
+                        "replacement": ""
                     }
                 }
             ]
         }
-    }
+    },
+    "postActions": [{
+            "description": "Restore NuGet packages required by this project.",
+            "manualInstructions": [{
+                    "text": "Run 'dotnet restore'"
+                }
+            ],
+            "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+            "continueOnError": true
+        }
+    ]
 }
