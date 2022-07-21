@@ -7,11 +7,11 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-#if (!nodatabase)
+#if (postgre || mysql || sqlserver)
 using WebApi.Application.Entities;
 using WebApi.Application.Features.GetFromDataBase;
 #endif
-#if (!noqueue)
+#if (sqs || kafka || rabbitmq || azure)
 using WebApi.Application.Features.SendToQueue;
 #endif
 #if (!noexternalapi)
@@ -30,23 +30,24 @@ namespace WebApi.Api.Controllers
         {
             _mediator = mediator;
         }
-#if (!nodatabase)
+
+#if (postgre || mysql || sqlserver)
         [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<Something>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetFromDataBase()
             => await _mediator.Send(new GetFromDataBaseCommand()).ToActionResult();
-#endif
 
-#if (!noqueue)
+#endif
+#if (sqs || kafka || rabbitmq || azure)
         [HttpPost()]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> SendToQueue([FromBody] SendToQueueCommand command) 
             => await _mediator.Send(command).ToActionResult();
-#endif
 
+#endif
 #if (!noexternalapi)
         [HttpGet("{PostalCode}")]
         [ProducesResponseType(typeof(GetFromExternalApiResult), (int)HttpStatusCode.OK)]
@@ -54,6 +55,7 @@ namespace WebApi.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetFromExternalApi([FromRoute] GetFromExternalApiCommand command) 
             => await _mediator.Send(command).ToActionResult();
+
 #endif
     }
 }

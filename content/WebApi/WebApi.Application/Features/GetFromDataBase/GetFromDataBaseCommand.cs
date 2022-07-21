@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if (postgre || mysql || sqlserver)
+using System.Collections.Generic;
 
 using Herald.Result;
 
@@ -12,3 +13,4 @@ namespace WebApi.Application.Features.GetFromDataBase
     {
     }
 }
+#endif

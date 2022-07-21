@@ -1,4 +1,4 @@
-﻿
+﻿#if (postgre || mysql || sqlserver)
 using Microsoft.EntityFrameworkCore;
 
 using WebApi.Application.Entities;
@@ -12,7 +12,7 @@ namespace WebApi.Infrastructure.Persistance
 
         public EntityContext()
         {
-            //dotnet ef migrations add MyMigration --project ..\WebApi.Infrastructure
+            //dotnet ef --startup-project WebApi.Api migrations add Initial --project WebApi.Infrastructure
 
             this.Database.EnsureCreated();
         }
@@ -27,3 +27,4 @@ namespace WebApi.Infrastructure.Persistance
         }
     }
 }
+#endif

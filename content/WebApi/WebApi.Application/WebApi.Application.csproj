@@ -14,22 +14,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Herald.Result" Version="1.0.0" />
-		<PackageReference Include="Mapster" Version="7.2.0" />
+		<PackageReference Include="Herald.Result" Version="3.0.0" />
+		<PackageReference Include="Mapster" Version="7.3.0" />
 		<PackageReference Include="MediatR" Version="10.0.1" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+		<PackageReference Condition="'$(framework)' == 'net6.0'" Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+		<PackageReference Condition="'$(framework)' != 'net6.0'" Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+		<PackageReference Condition="'$(sqs)' != 'false'" Include="Herald.MessageQueue.Sqs" Version="11.0.0" />
+		<PackageReference Condition="'$(kafka)' != 'false'" Include="Herald.MessageQueue.Kafka" Version="11.0.0" />
+		<PackageReference Condition="'$(rabbitmq)' != 'false'" Include="Herald.MessageQueue.RabbitMq" Version="11.0.0" />
+		<PackageReference Condition="'$(azure)' != 'false'" Include="Herald.MessageQueue.AzureStorageQueue" Version="11.0.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(nodatabase)' != 'true'">
-		<PackageReference Include="Herald.EntityFramework" Version="4.0.0" />
+	<ItemGroup Condition="'$(postgre)' != 'false' OR '$(mysql)' != 'false' OR '$(sqlserver)' != 'false'">
+		<PackageReference Include="Herald.EntityFramework" Version="5.0.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(noqueue)' != 'true'">
-		<PackageReference Include="Herald.MessageQueue.Sqs" Version="8.1.0" />
-	</ItemGroup>
-
-	<ItemGroup Condition=" '$(noexternalapi)' != 'true'">
-		<PackageReference Condition="'$(framework)' == 'net6.0'" Include="Refit" Version="6.2.16" />
+	<ItemGroup Condition="'$(noexternalapi)' != 'true'">
+		<PackageReference Condition="'$(framework)' == 'net6.0'" Include="Refit" Version="6.3.2" />
 		<PackageReference Condition="'$(framework)' != 'net6.0'" Include="Refit" Version="5.2.4" />
 	</ItemGroup>
 

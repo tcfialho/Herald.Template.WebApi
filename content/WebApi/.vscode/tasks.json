@@ -41,7 +41,7 @@
 		{
             "label": "docker-compose",
             "type": "shell",
-            "command": "docker-compose -f '${workspaceFolder}/docker-compose.yml' up -d --build",
+            "command": "docker-compose -f '${workspaceFolder}/.docker/docker-compose.yml' up -d --build",
             "dependsOn": [
                 "build"
             ]

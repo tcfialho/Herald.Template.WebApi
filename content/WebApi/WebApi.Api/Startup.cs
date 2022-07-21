@@ -29,13 +29,13 @@ namespace WebApi.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddFeatures(Configuration);
-#if (!noqueue)
+#if (sqs || kafka || rabbitmq || azure)
             services.AddQueues(Configuration);
 #endif
 #if (!noexternalapi)
             services.AddWebServices(Configuration);
 #endif
-#if (!nodatabase)
+#if (postgre || mysql || sqlserver)
             services.AddRepositories(Configuration);
 #endif
             services.AddControllers(options =>

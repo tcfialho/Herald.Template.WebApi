@@ -12,11 +12,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Herald.ModelBinder" Version="1.0.1" />
-		<PackageReference Include="Herald.ModelBinder.Swagger" Version="1.0.1" />
+		<PackageReference Include="Herald.ModelBinder" Version="1.0.2" />
+		<PackageReference Include="Herald.ModelBinder.Swagger" Version="1.0.2" />
 		<PackageReference Include="Herald.Observability.Jaeger" Version="1.0.0" />
-		<PackageReference Include="Herald.Result.Mvc" Version="1.0.0" />
-		<PackageReference Include="Herald.Web.Swagger" Version="1.2.1" />
+		<PackageReference Include="Herald.Result.Mvc" Version="3.0.0" />
+		<PackageReference Include="Herald.Web.Swagger" Version="2.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
