@@ -14,12 +14,10 @@
 See more information in [Nuget](https://www.nuget.org/packages/Herald.Template.WebApi/).
 
 ## Usage
-
 ```
 dotnet new herald-api -n ProjectName -o OutputFolder
 ```
-
-### Options
+## Full Options
 ```
 dotnet new herald-api -n ProjectName -o OutputFolder -f=net6.0 -q=sqs -d=postgre -ne
 ```
