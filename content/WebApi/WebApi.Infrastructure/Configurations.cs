@@ -113,11 +113,11 @@ namespace WebApi.Infrastructure
         {
             var typeName = typeof(T).Name;
 
-            RequiredConfiguration<T>(configuration, $"WebServices:{typeName}:InitialDelay");
+            RequiredConfiguration<T>(configuration, $"WebServices:{typeName}:RetryDelay");
             RequiredConfiguration<T>(configuration, $"WebServices:{typeName}:RetryCount");
             RequiredConfiguration<T>(configuration, $"WebServices:{typeName}:Url");
 
-            int.TryParse(configuration[$"WebServices:{typeName}:InitialDelay"], out int initialDelay);
+            int.TryParse(configuration[$"WebServices:{typeName}:RetryDelay"], out int initialDelay);
             int.TryParse(configuration[$"WebServices:{typeName}:RetryCount"], out int retryCount);
 
             var retryDelay = Backoff.ExponentialBackoff(TimeSpan.FromSeconds(initialDelay), retryCount);
@@ -131,7 +131,7 @@ namespace WebApi.Infrastructure
                     .AddPolicyHandler((services, request) => HttpPolicyExtensions.HandleTransientHttpError().OrResult(r => !r.IsSuccessStatusCode)
                     .WaitAndRetryAsync(retryDelay, onRetry: (response, timespan, retryAttempt, context) =>
                     {
-                        var logger = services.GetRequiredService<ILogger<ICepService>>();
+                        var logger = services.GetRequiredService<ILogger<T>>();
                         var content = request?.Content?.ReadAsStringAsync()?.Result;
                         logger.LogWarning($"Delaying request {request?.Method?.Method} {request?.RequestUri?.OriginalString} for {timespan.TotalSeconds} seconds then making retry {retryAttempt} - statuscode {response?.Result?.StatusCode} - content {content}");
                     }))
@@ -140,7 +140,7 @@ namespace WebApi.Infrastructure
                         (response, context, cancellationToken) => Task.FromResult(response.Result),
                         (context, cancellationToken) =>
                         {
-                            var logger = services.GetRequiredService<ILogger<ICepService>>();
+                            var logger = services.GetRequiredService<ILogger<T>>();
                             logger.LogError(context.Exception, $"Error while processing request {request?.Method?.Method} {request?.RequestUri?.OriginalString}");
                             if (context.Exception != null) throw context.Exception;
                             return Task.CompletedTask;
